@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb page-breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('panel.movies.index') }}">Ana Sayfa</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('panel.movies.index') }}">Ana Sayfa.</a></li>
     @foreach($container->view->breadcrumb as $title => $href)
     <li class="breadcrumb-item"><a href="{{ $href }}">{{ $title }}</a></li>
     @endforeach
