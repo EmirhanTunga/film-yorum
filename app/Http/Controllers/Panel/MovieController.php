@@ -10,14 +10,43 @@ use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $movies = Movie::orderBy('id', 'desc')->get();
-        return view('panel.movies.index', compact('movies'));
+        if ($request->has('datatable')) {
+            $movies = Movie::orderBy('id', 'desc')->get();
+            return response()->json(['data' => $movies]);
+        }
+
+        $container = (object) [
+            'page' => 'movies',
+            'title' => 'Film',
+            'view' => (object) [
+                'breadcrumb' => [
+                    'Filmler' => route('panel.movies.index')
+                ]
+            ]
+        ];
+
+        return view('panel.movies.list', compact('container'));
     }
     public function create()
     {
-        return view('panel.movies.create');
+
+        $item = new Movie();
+
+
+        $container = (object) [
+            'page' => 'movies',
+            'title' => 'Film',
+            'view' => (object) [
+                'breadcrumb' => [
+                    'Filmler' => route('panel.movies.index')
+                ]
+            ]
+        ];
+
+        return view('panel.movies.form', compact('item', 'container'));
     }
 
     public function destroy($id)
@@ -55,6 +84,7 @@ class MovieController extends Controller
         $movie->save();
 
 
-        return redirect()->route('panel.movies.create')->with('success', 'Film başarıyla eklendi.');
+
+        return redirect()->route('panel.movies.index')->with('success', 'Film başarıyla eklendi.');
     }
 }
